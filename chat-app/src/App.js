@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react'
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-import { doc, setDoc, getFirestore, getDoc, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp } from 'firebase/firestore'
+import {  getFirestore, onSnapshot, collection, addDoc, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { auth, app } from './firebase-config'
 
 
@@ -61,27 +61,28 @@ function App() {
       <div className="App">
         {user ? (
           <>
-            <div> Logged in as {user.displayName}</div>
-            <input
-              value={newMessage}
-              onChange={e => setNewMessage(e.target.value)}
-            />
-            <button onClick={sendMessage}>Send Message</button>
-            <button onClick={() => auth.signOut()}>Logout</button>
+            <div className='LogInfo'> 
+              <p>Logged in as {user.displayName}</p>
+              <button onClick={() => auth.signOut()} id='logout'>Logout</button>
+            </div>
 
             {messages.map(msg => (
-              <div key={msg.id}> 
+              <div key={msg.id} className='messageBox'> 
                 <img 
                   src={msg.data.photoURL}
                 />
                 {msg.data.text}
               </div>
             ))}
+
+            <input
+              value={newMessage}
+              onChange={e => setNewMessage(e.target.value)}
+            />
+             <button onClick={sendMessage}>Send Message</button>
           </>
         ):
-
-        
-        <button onClick={handleGoogleLogin}>Sign-In With Google</button>
+          <button onClick={handleGoogleLogin}>Sign-In With Google</button>
         }
       </div>
   )
